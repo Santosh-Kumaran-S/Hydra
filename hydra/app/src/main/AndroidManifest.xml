@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Exact timing is requested only for hydration reminders; the app falls back to inexact alarms if it is not granted. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Weather lookup by a city the user types (HTTPS to Open-Meteo). No location permission. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Read-only heart rate from Health Connect (only works if the watch app writes to it). -->
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+    <!-- Deliberately NOT requested: USE_FULL_SCREEN_INTENT, foreground services, location, Bluetooth (not needed yet). -->
+    <queries><package android:name="com.google.android.apps.healthdata" /></queries>
+    <application
+        android:allowBackup="false"
+        android:label="Hydra"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:name=".HydraApp">
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+        </activity>
+        <activity-alias android:name=".PermissionUsageAlias" android:exported="true"
+            android:targetActivity=".MainActivity" android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
+        <activity android:name=".reminders.ReminderActivity" android:exported="false" android:launchMode="singleTop" />
+        <receiver android:name=".reminders.ReminderReceiver" android:exported="false" />
+        <receiver android:name=".reminders.ActionReceiver" android:exported="false" />
+        <receiver android:name=".reminders.BootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
