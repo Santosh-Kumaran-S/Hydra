@@ -9,6 +9,6 @@ jobs:
         with: { distribution: temurin, java-version: 17 }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: 8.9 }
-      - run: gradle :algorithm:test :app:testDebugUnitTest :app:assembleDebug
+      - run: cd hydra && gradle :algorithm:test :app:testDebugUnitTest :app:assembleDebug
       - uses: actions/upload-artifact@v4
-        with: { name: hydra-debug-apk, path: app/build/outputs/apk/debug/*.apk }
+        with: { name: hydra-debug-apk, path: hydra/app/build/outputs/apk/debug/*.apk }
