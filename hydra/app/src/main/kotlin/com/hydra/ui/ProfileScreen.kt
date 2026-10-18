@@ -39,7 +39,7 @@ import com.hydra.profile.Validation as V
         field("target", "Daily fluid target (mL)", target, { target = it },
             "Enter only the amount your healthcare professional advised. Leave blank if none; nothing is calculated from height or weight.")
         field("gap", "Clinician minimum gap between reminders (min, optional)", gap, { gap = it })
-        Button(Modifier.fillMaxWidth(), onClick = {
+        Button(modifier = Modifier.fillMaxWidth(), onClick = {
             val e = mutableMapOf<String, String>()
             val h = V.height(height); h.error?.let { e["height"] = it }
             val w = V.weight(weight); w.error?.let { e["weight"] = it }
